@@ -22,6 +22,8 @@ public class DomeUtil {
     public static List<DomeChestSlot> opciones;
     public static Map<String, Map<Item, Integer>> compraVenta;
 
+    public static Map<Integer, Map.Entry<Item, Integer>> compraVentaNuevo;
+
     public static void generarOpcionesCofre(){
         if(compraVenta==null){
             generarMapaCompraVenta();
@@ -33,6 +35,7 @@ public class DomeUtil {
 
     private static void generarMapaCompraVenta() {
         // TODO 100: Definir las operaciones de compra venta, es un ejemplo
+        // VIEJUNO
         compraVenta = new HashMap<>();
         Map<Item, Integer> compraMap = new HashMap<>();
         compraVenta.put("COMPRAR", compraMap);
@@ -42,6 +45,15 @@ public class DomeUtil {
         compraMap.put(Items.ARROW.asItem(), 25);
         ventaMap.put(Blocks.DIAMOND_BLOCK.asItem(), 20);
         ventaMap.put(Items.ARROW.asItem(), 5);
+        // NUEVA
+
+        compraVentaNuevo = new HashMap<>();
+
+        compraVentaNuevo.put(2001, Map.entry(Blocks.DIAMOND_BLOCK.asItem(), 100));
+        compraVentaNuevo.put(2002, Map.entry(Items.ARROW.asItem(), 20));
+
+        compraVentaNuevo.put(3001, Map.entry(Blocks.DIAMOND_BLOCK.asItem(), 25));
+        compraVentaNuevo.put(3002, Map.entry(Items.ARROW.asItem(), 5));
     }
 
     private static void generarItemsCofre() {
@@ -62,26 +74,24 @@ public class DomeUtil {
         tooltopMsgs.put("tranqui, no muy lejos", formatos);
         slot.setTooltopMsgs(tooltopMsgs);
         opciones.add(slot);
-        opciones.add(new DomeChestSlot(2, 3, 0, new ItemStack(Items.DIAMOND_SWORD), "Obtener espada de diamante - Nunca ha sido tan facil", 102));
-        opciones.add(new DomeChestSlot(1, 4, 0, new ItemStack(Blocks.TNT), "Perder objeto aleatorio", 103));
-        opciones.add(new DomeChestSlot(1, 2, 0, new ItemStack(Blocks.GOLD_BLOCK), "Ganar dinero - ¡Me ha tocado la loteria!", 104));
-        opciones.add(new DomeChestSlot(0, 6, 0, new ItemStack(Blocks.COAL_BLOCK), "Perder dinero - ¿Dónde he perdido la pasta?", 105));
+        opciones.add(new DomeChestSlot(2, 3, 0, new ItemStack(Items.DIAMOND_SWORD), "Obtener espada de diamante - Nunca ha sido tan facil", 1002));
+        opciones.add(new DomeChestSlot(1, 4, 0, new ItemStack(Blocks.TNT), "Perder objeto aleatorio", 1003));
+        opciones.add(new DomeChestSlot(1, 2, 0, new ItemStack(Blocks.GOLD_BLOCK), "Ganar dinero - ¡Me ha tocado la loteria!", 1004));
+        opciones.add(new DomeChestSlot(0, 6, 0, new ItemStack(Blocks.COAL_BLOCK), "Perder dinero - ¿Dónde he perdido la pasta?", 1005));
         // COMPRA BLOQUES - EJEMPLOS
-        opciones.add(new DomeChestSlot(0, 1, 1, new ItemStack(Blocks.DIAMOND_BLOCK), "COMPRAR DIAMANTE - 100$", 201));
-        opciones.add(new DomeChestSlot(0, 2, 1, new ItemStack(Items.ARROW), "COMPRAR FLECHA - 25$", 202));
+        opciones.add(new DomeChestSlot(0, 1, 1, new ItemStack(Blocks.DIAMOND_BLOCK), "COMPRAR DIAMANTE - 100$", 2001));
+        opciones.add(new DomeChestSlot(0, 2, 1, new ItemStack(Items.ARROW), "COMPRAR FLECHA - 25$", 2002));
         // VENDER BLOQUES - EJEMPLOS
-        opciones.add(new DomeChestSlot(0, 1, 2, new ItemStack(Blocks.DIAMOND_BLOCK), "VENDER DIAMANTE - 20$",301));
-        opciones.add(new DomeChestSlot(0, 2, 2, new ItemStack(Items.ARROW), "VENDER FLECHA - 5$", 302));
+        opciones.add(new DomeChestSlot(0, 1, 2, new ItemStack(Blocks.DIAMOND_BLOCK), "VENDER DIAMANTE - 20$",3001));
+        opciones.add(new DomeChestSlot(0, 2, 2, new ItemStack(Items.ARROW), "VENDER FLECHA - 5$", 3002));
         // PAGINACION
         opciones.add(new DomeChestSlot(1, 8, 0, new ItemStack(Items.ARROW), "Pag. SIGUIENTE", -1));
         opciones.add(new DomeChestSlot(1, 0, 1, new ItemStack(Items.ARROW), "Pag. ANTERIOR", 0));
         opciones.add(new DomeChestSlot(1, 8, 1, new ItemStack(Items.ARROW), "Pag. SIGUIENTE", -2));
         opciones.add(new DomeChestSlot(1, 0, 2, new ItemStack(Items.ARROW), "Pag. ANTERIOR", -1));
 
-
-
         // Mis opciones
-        opciones.add(new DomeChestSlot(0, 0, 0, new ItemStack(Items.GLASS), "Ampliar SUR", 8));
+        opciones.add(new DomeChestSlot(0, 0, 0, new ItemStack(Items.GLASS), "Ampliar SUR", 1006));
     }
 
     public static void realizarAccion(ServerPlayer player, int accionId) {
@@ -89,37 +99,34 @@ public class DomeUtil {
         ServerLevel level = player.getLevel();
         DomeMod.LOGGER.info("Realizando la accion {}", accionId);
         // TODO 102: En funcion de la accion que nos llega, invocar al metodo correspondiente que querais
-        switch (accionId){
-            case 8:
-                ampliarSur(level);
-                break;
-            case 101:
-                generarBloqueEnPosRandom(level);
-                break;
-            case 102:
-                obtenerEspadaDiamante(player);
-                break;
-            case 103:
-                perderItemRandom(player);
-                break;
-            case 104:
-                modificarDinero(level, 250);
-                break;
-            case 105:
-                modificarDinero(level, -125);
-                break;
-            case 201:
-                comprar(player, 5);
-                break;
-            case 202:
-                comprar(player, 6);
-                break;
-            case 301:
-                vender(player, 7);
-                break;
-            case 302:
-                vender(player, 8);
-                break;
+        if(accionId<2000){
+            // ACCIONES DE CONFIGURACION
+            switch (accionId) {
+                case 1001:
+                    generarBloqueEnPosRandom(level);
+                    break;
+                case 1002:
+                    obtenerEspadaDiamante(player);
+                    break;
+                case 1003:
+                    perderItemRandom(player);
+                    break;
+                case 1004:
+                    modificarDinero(level, 250);
+                    break;
+                case 1005:
+                    modificarDinero(level, -125);
+                    break;
+                case 1006:
+                    ampliarSur(level);
+                    break;
+            }
+        } else if (accionId<3000) {
+            // ACCIONES DE COMPRA
+            comprar(player, accionId);
+        } else if (accionId<4000) {
+            // ACCIONES DE VENTA
+            vender(player, accionId);
         }
     }
 
@@ -252,11 +259,10 @@ public class DomeUtil {
         domeData.setDomeTotalMoney(totalMoney);
     }
 
-    private static void comprar(ServerPlayer player, int posItemSlot){
-        DomeChestSlot itemSlot = opciones.get(posItemSlot);
-        ItemStack itemStack = itemSlot.getItemStack();
+    private static void comprar(ServerPlayer player, int accionId){
 
-        int precio = compraVenta.get("COMPRAR").get(itemStack.getItem());
+        Item item = compraVentaNuevo.get(accionId).getKey();
+        int precio = compraVentaNuevo.get(accionId).getValue();
 
         // RESTO DEL DINERO QUE HAY LO QUE CUESTA
         DomeWorldData domeData = DomeWorldData.get(player.getLevel());
@@ -264,14 +270,13 @@ public class DomeUtil {
         totalMoney = totalMoney - precio;
         domeData.setDomeTotalMoney(totalMoney);
 
-        GameUtil.darItem(player, itemStack.getItem(), 1);
+        GameUtil.darItem(player, item, 1);
     }
 
-    private static void vender(ServerPlayer player, int posItemSlot){
-        DomeChestSlot itemSlot = opciones.get(posItemSlot);
-        ItemStack itemStack = itemSlot.getItemStack();
+    private static void vender(ServerPlayer player, int accionId){
 
-        int precio = compraVenta.get("VENDER").get(itemStack.getItem());
+        Item item = compraVentaNuevo.get(accionId).getKey();
+        int precio = compraVentaNuevo.get(accionId).getValue();
 
         // RESTO DEL DINERO QUE HAY LO QUE CUESTA
         DomeWorldData domeData = DomeWorldData.get(player.getLevel());
@@ -279,7 +284,7 @@ public class DomeUtil {
         totalMoney = totalMoney + precio;
         domeData.setDomeTotalMoney(totalMoney);
 
-        GameUtil.quitarItem(player, itemStack.getItem(), 1);
+        GameUtil.quitarItem(player, item, 1);
     }
 
 }
