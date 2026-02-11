@@ -77,6 +77,11 @@ public class DomeUtil {
         opciones.add(new DomeChestSlot(1, 0, 1, new ItemStack(Items.ARROW), "Pag. ANTERIOR", 0));
         opciones.add(new DomeChestSlot(1, 8, 1, new ItemStack(Items.ARROW), "Pag. SIGUIENTE", -2));
         opciones.add(new DomeChestSlot(1, 0, 2, new ItemStack(Items.ARROW), "Pag. ANTERIOR", -1));
+
+
+
+        // Mis opciones
+        opciones.add(new DomeChestSlot(0, 0, 0, new ItemStack(Items.GLASS), "Ampliar SUR", 8));
     }
 
     public static void realizarAccion(ServerPlayer player, int accionId) {
@@ -85,6 +90,9 @@ public class DomeUtil {
         DomeMod.LOGGER.info("Realizando la accion {}", accionId);
         // TODO 102: En funcion de la accion que nos llega, invocar al metodo correspondiente que querais
         switch (accionId){
+            case 8:
+                ampliarSur(level);
+                break;
             case 101:
                 generarBloqueEnPosRandom(level);
                 break;
@@ -115,6 +123,40 @@ public class DomeUtil {
         }
     }
 
+    private static void ampliarSur(ServerLevel level) {
+        // NORTE --> Z NEGATIVO --> domeData.getDistNorte()
+        // SUR --> Z POSITIVO --> domeData.getDistSur()
+        // OESTE --> X NEGATIVO --> domeData.getDistOeste()
+        // ESTE --> X POSITIVO --> domeData.getDistEste()
+        // ABAJO --> Y NEGATIVO --> domeData.getDistAbajo()
+        // ARRIBA --> Y POSITIVO --> domeData.getDistArriba()
+        DomeWorldData domeData = DomeWorldData.get(level);
+        BlockPos centroCupula = domeData.getControllerPos();
+
+        int z = domeData.getDistSur();
+        for (int x = -domeData.getDistOeste(); x <=domeData.getDistEste(); x++) {
+            for (int y = -domeData.getDistAbajo(); y <=domeData.getDistArriba(); y++) {
+
+                if(
+                        x == -domeData.getDistOeste() ||
+                        x==domeData.getDistEste() ||
+                        y==-domeData.getDistAbajo() ||
+                        y==domeData.getDistArriba()
+                ){
+                    BlockPos posPared = new BlockPos(centroCupula.getX()+x, centroCupula.getY()+y, centroCupula.getZ()+z+1);
+                    GameUtil.colocarBloque(level, posPared, Blocks.GLASS);
+                } else {
+                    BlockPos from = GameUtil.generarBlockPos(centroCupula.getX()+x, centroCupula.getY()+y, centroCupula.getZ()+z);
+                    BlockPos to = GameUtil.generarBlockPos(centroCupula.getX()+x, centroCupula.getY()+y, centroCupula.getZ()+z+1);
+                    GameUtil.intercambiarBloques(level, from, to);
+                }
+            }
+        }
+
+        domeData.setDistSur(z+1);
+
+    }
+
     public static void generarCupulaInicial(ServerLevel level, BlockPos center) {
         // TODO 103: Generar una cupula que rodee al jugador en la distancia que corresponda
         BlockState domeState = ModBlocks.DOME_BLOCK.get().defaultBlockState();
@@ -127,19 +169,50 @@ public class DomeUtil {
         // ABAJO --> Y NEGATIVO --> domeData.getDistAbajo()
         // ARRIBA --> Y POSITIVO --> domeData.getDistArriba()
 
-        // elijo una posicion random a modo de ejemplo
-        BlockPos posRandom = new BlockPos(center.getX()+((int) (Math.random()*3)+1), center.getY()+((int) (Math.random()*3)+1), center.getZ()+((int) (Math.random()*3)+1));
-        // Esto coloca un bloque IRROMPIBLE y TRANSPARENTE en donde indiquemos
-        GameUtil.colocarBloque(level, posRandom, ModBlocks.DOME_BLOCK.get());
+        for (int x = -domeData.getDistOeste(); x <=domeData.getDistEste(); x++) {
+            for (int y = -domeData.getDistAbajo(); y <=domeData.getDistArriba(); y++) {
+                for (int z = -domeData.getDistNorte(); z <=domeData.getDistSur(); z++) {
+                    if(
+                            x == -domeData.getDistOeste() ||
+                            x==domeData.getDistEste() ||
+                            y==-domeData.getDistAbajo() ||
+                            y==domeData.getDistArriba() ||
+                            z==-domeData.getDistNorte() ||
+                            z == domeData.getDistSur()
+                    ){
+                        BlockPos posPared = new BlockPos(center.getX()+x, center.getY()+y, center.getZ()+z);
+                        GameUtil.colocarBloque(level, posPared, Blocks.GLASS);
+                    }
+                }
+            }
+        }
     }
 
     public static boolean estaDentro(ServerLevel level, BlockPos pos) {
         // TODO 104: Analizar si la posicion que nos llega esta dentro de la cupula
         DomeWorldData domeData = DomeWorldData.get(level);
         BlockPos bloqueDeControl = domeData.getControllerPos();
+        // NORTE --> Z NEGATIVO --> domeData.getDistNorte()
+        // SUR --> Z POSITIVO --> domeData.getDistSur()
+        // OESTE --> X NEGATIVO --> domeData.getDistOeste()
+        // ESTE --> X POSITIVO --> domeData.getDistEste()
+        // ABAJO --> Y NEGATIVO --> domeData.getDistAbajo()
+        // ARRIBA --> Y POSITIVO --> domeData.getDistArriba()
         if(bloqueDeControl==null){
             return true;
         }
+
+        if(
+                pos.getX() > bloqueDeControl.getX() + domeData.getDistEste() ||
+                pos.getX() < bloqueDeControl.getX() - domeData.getDistOeste() ||
+                pos.getY() > bloqueDeControl.getY() + domeData.getDistArriba() ||
+                pos.getY() < bloqueDeControl.getY() - domeData.getDistAbajo() ||
+                pos.getZ() > bloqueDeControl.getZ() + domeData.getDistSur() ||
+                pos.getZ() < bloqueDeControl.getZ() - domeData.getDistNorte()
+        ){
+            return false;
+        }
+
         return true;
     }
 
