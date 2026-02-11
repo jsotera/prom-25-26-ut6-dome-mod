@@ -20,12 +20,11 @@ import java.util.*;
 public class DomeUtil {
 
     public static List<DomeChestSlot> opciones;
-    public static Map<String, Map<Item, Integer>> compraVenta;
 
-    public static Map<Integer, Map.Entry<Item, Integer>> compraVentaNuevo;
+    public static Map<Integer, Map.Entry<Item, Integer>> compraVenta;
 
     public static void generarOpcionesCofre(){
-        if(compraVenta==null){
+        if(compraVenta ==null){
             generarMapaCompraVenta();
         }
         if(opciones==null){
@@ -35,25 +34,79 @@ public class DomeUtil {
 
     private static void generarMapaCompraVenta() {
         // TODO 100: Definir las operaciones de compra venta, es un ejemplo
-        // VIEJUNO
+
         compraVenta = new HashMap<>();
-        Map<Item, Integer> compraMap = new HashMap<>();
-        compraVenta.put("COMPRAR", compraMap);
-        Map<Item, Integer> ventaMap = new HashMap<>();
-        compraVenta.put("VENDER", ventaMap);
-        compraMap.put(Blocks.DIAMOND_BLOCK.asItem(), 100);
-        compraMap.put(Items.ARROW.asItem(), 25);
-        ventaMap.put(Blocks.DIAMOND_BLOCK.asItem(), 20);
-        ventaMap.put(Items.ARROW.asItem(), 5);
-        // NUEVA
 
-        compraVentaNuevo = new HashMap<>();
+        compraVenta.put(2001, Map.entry(Blocks.DIAMOND_BLOCK.asItem(), 100));
+        compraVenta.put(2002, Map.entry(Items.ARROW.asItem(), 20));
+        // Materiales Básicos y Minerales
+        compraVenta.put(2003, Map.entry(Items.IRON_INGOT, 15));
+        compraVenta.put(2004, Map.entry(Items.GOLD_INGOT, 30));
+        compraVenta.put(2005, Map.entry(Items.COPPER_INGOT, 10));
+        compraVenta.put(2006, Map.entry(Items.NETHERITE_INGOT, 500));
+        compraVenta.put(2007, Map.entry(Items.COAL, 5));
+        compraVenta.put(2008, Map.entry(Items.LAPIS_LAZULI, 12));
+        compraVenta.put(2009, Map.entry(Items.EMERALD, 50));
+        compraVenta.put(2010, Map.entry(Items.QUARTZ, 8));
+        // Bloques de Construcción
+        compraVenta.put(2011, Map.entry(Blocks.STONE.asItem(), 2));
+        compraVenta.put(2012, Map.entry(Blocks.COBBLESTONE.asItem(), 1));
+        compraVenta.put(2013, Map.entry(Blocks.OAK_LOG.asItem(), 4));
+        compraVenta.put(2014, Map.entry(Blocks.SPRUCE_LOG.asItem(), 4));
+        compraVenta.put(2015, Map.entry(Blocks.DIRT.asItem(), 1));
+        compraVenta.put(2016, Map.entry(Blocks.SAND.asItem(), 2));
+        compraVenta.put(2017, Map.entry(Blocks.GRAVEL.asItem(), 2));
+        compraVenta.put(2018, Map.entry(Blocks.GLASS.asItem(), 5));
+        compraVenta.put(2019, Map.entry(Blocks.OBSIDIAN.asItem(), 40));
+        compraVenta.put(2020, Map.entry(Blocks.MOSS_BLOCK.asItem(), 10));
 
-        compraVentaNuevo.put(2001, Map.entry(Blocks.DIAMOND_BLOCK.asItem(), 100));
-        compraVentaNuevo.put(2002, Map.entry(Items.ARROW.asItem(), 20));
+// Comida y Agricultura
+        compraVenta.put(2021, Map.entry(Items.WHEAT, 3));
+        compraVenta.put(2022, Map.entry(Items.BREAD, 6));
+        compraVenta.put(2023, Map.entry(Items.APPLE, 5));
+        compraVenta.put(2024, Map.entry(Items.COOKED_BEEF, 12));
+        compraVenta.put(2025, Map.entry(Items.COOKED_CHICKEN, 10));
+        compraVenta.put(2026, Map.entry(Items.GOLDEN_APPLE, 75));
+        compraVenta.put(2027, Map.entry(Items.POTATO, 2));
+        compraVenta.put(2028, Map.entry(Items.CARROT, 2));
 
-        compraVentaNuevo.put(3001, Map.entry(Blocks.DIAMOND_BLOCK.asItem(), 25));
-        compraVentaNuevo.put(3002, Map.entry(Items.ARROW.asItem(), 5));
+        compraVenta.put(2029, Map.entry(Items.IRON_SWORD, 40));
+        compraVenta.put(2030, Map.entry(Items.DIAMOND_SWORD, 250));
+        compraVenta.put(2031, Map.entry(Items.BOW, 30));
+        compraVenta.put(2032, Map.entry(Items.SHIELD, 45));
+        compraVenta.put(2033, Map.entry(Items.IRON_PICKAXE, 45));
+        compraVenta.put(2034, Map.entry(Items.DIAMOND_PICKAXE, 300));
+
+        compraVenta.put(2035, Map.entry(Items.TORCH, 2));
+        compraVenta.put(2036, Map.entry(Items.BUCKET, 15));
+        compraVenta.put(2037, Map.entry(Items.WATER_BUCKET, 20));
+        compraVenta.put(2038, Map.entry(Items.LAVA_BUCKET, 35));
+        compraVenta.put(2039, Map.entry(Items.ENDER_PEARL, 60));
+        compraVenta.put(2040, Map.entry(Items.BLAZE_ROD, 45));
+        compraVenta.put(2041, Map.entry(Items.GUNPOWDER, 15));
+        compraVenta.put(2042, Map.entry(Items.STRING, 5));
+        compraVenta.put(2043, Map.entry(Items.FEATHER, 3));
+        compraVenta.put(2044, Map.entry(Items.LEATHER, 10));
+        compraVenta.put(2045, Map.entry(Items.PAPER, 4));
+        compraVenta.put(2046, Map.entry(Items.BOOK, 15));
+        compraVenta.put(2047, Map.entry(Items.SLIME_BALL, 25));
+
+        compraVenta.put(2048, Map.entry(Items.REDSTONE, 10));
+        compraVenta.put(2049, Map.entry(Blocks.PISTON.asItem(), 30));
+        compraVenta.put(2050, Map.entry(Blocks.STICKY_PISTON.asItem(), 50));
+        compraVenta.put(2051, Map.entry(Blocks.REPEATER.asItem(), 20));
+        compraVenta.put(2052, Map.entry(Blocks.COMPARATOR.asItem(), 25));
+
+        Map<Integer, Map.Entry<Item, Integer>> itemsVenta = new HashMap<>();
+        Set<Map.Entry<Integer, Map.Entry<Item, Integer>>> entries = compraVenta.entrySet();
+        for (Map.Entry<Integer, Map.Entry<Item, Integer>> entry : entries) {
+            int accionId = entry.getKey()+1000;
+            Map.Entry<Item, Integer> itemEntry = Map.entry(entry.getValue().getKey(), entry.getValue().getValue()/4);
+            itemsVenta.put(accionId, itemEntry);
+        }
+
+        compraVenta.put(3001, Map.entry(Blocks.DIAMOND_BLOCK.asItem(), 25));
+        compraVenta.put(3002, Map.entry(Items.ARROW.asItem(), 5));
     }
 
     private static void generarItemsCofre() {
@@ -261,8 +314,8 @@ public class DomeUtil {
 
     private static void comprar(ServerPlayer player, int accionId){
 
-        Item item = compraVentaNuevo.get(accionId).getKey();
-        int precio = compraVentaNuevo.get(accionId).getValue();
+        Item item = compraVenta.get(accionId).getKey();
+        int precio = compraVenta.get(accionId).getValue();
 
         // RESTO DEL DINERO QUE HAY LO QUE CUESTA
         DomeWorldData domeData = DomeWorldData.get(player.getLevel());
@@ -275,8 +328,8 @@ public class DomeUtil {
 
     private static void vender(ServerPlayer player, int accionId){
 
-        Item item = compraVentaNuevo.get(accionId).getKey();
-        int precio = compraVentaNuevo.get(accionId).getValue();
+        Item item = compraVenta.get(accionId).getKey();
+        int precio = compraVenta.get(accionId).getValue();
 
         // RESTO DEL DINERO QUE HAY LO QUE CUESTA
         DomeWorldData domeData = DomeWorldData.get(player.getLevel());
